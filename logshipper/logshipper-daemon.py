@@ -20,14 +20,16 @@ def prepare_for_table(data, machine_id):
     """We don't want to store certain fields in the DB, e.g. the _BOOT_ID
     or the __CURSOR because they don't add any value in the central
     log index.
-
     """
+
+    defint = lambda x: 0 if x == '' else int(x)
+
     keep_and_convert = {
         'MESSAGE': str,
-        'PRIORITY': int,
-        '__REALTIME_TIMESTAMP': int,
-        '_PID': int,
-        '_UID': int,
+        'PRIORITY': defint,
+        '__REALTIME_TIMESTAMP': defint,
+        '_PID': defint,
+        '_UID': defint,
         '_SYSTEMD_UNIT': str,
         'SYSLOG_IDENTIFIER': str,
         '_COMM': str,
