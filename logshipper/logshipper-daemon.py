@@ -7,12 +7,7 @@ import socket
 
 
 def yield_log_lines(cursor=None):
-    cursor_args = [] if cursor is None else ['-c', cursor]
-
-    # Skip line with the cursor (we already sent that as witnessed by
-    # the entry in the cursor table).
-    if cursor is not None:
-        p.stdout.readline()
+    cursor_args = [] if cursor is None else ['--after-cursor', cursor]
     p = subprocess.Popen(['journalctl', '-f', '-n', 'all', '-o', 'json'] + cursor_args, stdout=subprocess.PIPE, bufsize=1)
 
     # xreadlines blocks after a while for reasons unknown
