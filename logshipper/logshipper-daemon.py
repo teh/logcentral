@@ -73,8 +73,8 @@ def main():
 
     for line in yield_log_lines(c):
         cursor, data = prepare_for_table(line, args.machine_id)
-        cursor_table.insert({"id": args.machine_id, "cursor": cursor}, durability="soft", conflict="replace").run()
         log_table.insert(data).run()
+        cursor_table.insert({"id": args.machine_id, "cursor": cursor}, durability="soft", conflict="replace").run()
 
 
 if __name__ == '__main__':
