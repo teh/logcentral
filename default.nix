@@ -1,4 +1,5 @@
-{ pythonPackages, fetchurl }:
+{ pythonPackages, fetchurl, lib }:
+
 let
 rethinkdb-driver = pythonPackages.buildPythonPackage rec {
   name = "rethinkdb-2.2.0.post6";
@@ -9,6 +10,6 @@ rethinkdb-driver = pythonPackages.buildPythonPackage rec {
 };
 in pythonPackages.buildPythonPackage {
   name = "logcentral-logshipper";
-  src = ./.;
+  src = lib.sourceFilesBySuffices ./. [".py"];
   propagatedBuildInputs = [ rethinkdb-driver pythonPackages.ipython ];
 }
