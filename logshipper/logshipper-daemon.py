@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import rethinkdb as r
 import argparse
 import json
