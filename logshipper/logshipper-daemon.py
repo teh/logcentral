@@ -16,7 +16,7 @@ def yield_log_lines(cursor=None):
         yield json.loads(l)
 
 
-def prepare_for_table(data):
+def prepare_for_table(data, machine_id):
     """We don't want to store certain fields in the DB, e.g. the _BOOT_ID
     or the __CURSOR because they don't add any value in the central
     log index.
@@ -24,6 +24,7 @@ def prepare_for_table(data):
     """
     to_keep = ['MESSAGE', 'PRIORITY', '__REALTIME_TIMESTAMP', '_PID', '_UID', '_SYSTEMD_UNIT', 'SYSLOG_IDENTIFIER', '_COMM']
     result = dict((key, data.get(key, '')) for key in to_keep)
+    result['MACHINE_ID'] = machine_id
     return data['__CURSOR'], result
 
 
@@ -55,7 +56,7 @@ def main():
     c = None if c is None else c['cursor']
 
     for line in yield_log_lines(c):
-        cursor, data = prepare_for_table(line)
+        cursor, data = prepare_for_table(line, args.machine_id)
         cursor_table.insert({"id": args.machine_id, "cursor": cursor}, durability="soft", conflict="replace").run()
         log_table.insert(data).run()
 
