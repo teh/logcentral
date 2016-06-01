@@ -22,8 +22,17 @@ def prepare_for_table(data, machine_id):
     log index.
 
     """
-    to_keep = ['MESSAGE', 'PRIORITY', '__REALTIME_TIMESTAMP', '_PID', '_UID', '_SYSTEMD_UNIT', 'SYSLOG_IDENTIFIER', '_COMM']
-    result = dict((key, data.get(key, '')) for key in to_keep)
+    keep_and_convert = {
+        'MESSAGE': str,
+        'PRIORITY': int,
+        '__REALTIME_TIMESTAMP': int,
+        '_PID': int,
+        '_UID': int,
+        '_SYSTEMD_UNIT': str,
+        'SYSLOG_IDENTIFIER': str,
+        '_COMM': str,
+    }
+    result = dict((key, converter(data.get(key, ''))) for key, converter in keep_and_convert.items())
     result['MACHINE_ID'] = machine_id
     return data['__CURSOR'], result
 
