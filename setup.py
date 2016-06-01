@@ -7,5 +7,8 @@ setup(name='logcentral-logshipper',
       author_email='tehunger@gmail.com',
       url='https://github.com/teh/',
       packages=['logshipper'],
-      scripts=['logshipper/logshipper-daemon.py'],
+      scripts=[
+          'logshipper/logshipper-daemon.py',
+          'logshipper/logcentral-cli.py',
+      ],
 )
