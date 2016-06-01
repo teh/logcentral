@@ -8,7 +8,7 @@ import socket
 
 def yield_log_lines(cursor=None):
     cursor_args = [] if cursor is None else ['-c', cursor]
-    p = subprocess.Popen(['sudo', 'journalctl', '-f', '-o', 'json'] + cursor_args, stdout=subprocess.PIPE, bufsize=1)
+    p = subprocess.Popen(['journalctl', '-f', '-o', 'json'] + cursor_args, stdout=subprocess.PIPE, bufsize=1)
 
     # xreadlines blocks after a while for reasons unknown
     while True:
