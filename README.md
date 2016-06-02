@@ -24,3 +24,18 @@ For a production setup:
 ```
 logshipper-daemon.py --rethinkdb-host central-rethinkdb:28015 --machine-id testmachine.mynetwork.com
 ```
+
+
+# To pandas
+
+```
+import pandas, rethinkdb as r
+r.connect().repl()
+log = r.db("logcentral").table("log")
+# filter and sort
+df = pandas.DataFrame.from_records(l.filter({"_UID": 1000}).order_by(r.row['__REALTIME_TIMESTAMP']).limit(2000).run())
+
+
+df['__REALTIME_TIMESTAMP'] = df['__REALTIME_TIMESTAMP'].astype('datetime64[us]')
+df = df.set_index('__REALTIME_TIMESTAMP')
+```
